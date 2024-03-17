@@ -1,6 +1,6 @@
 import React from "react";
 import { Recipe } from "../types";
-import { getRecipes } from "../services/apiService";
+import { getRecipes, getRecipesBySearch } from "../services/apiService";
 
 interface ProviderRecipesProps {
   children: React.ReactNode;
@@ -40,6 +40,24 @@ export const RecipeProvider: React.FC<ProviderRecipesProps> = ({
   const [activePage, setActivePage] = React.useState<number>(1);
   const [query, setQuery] = React.useState<string>("");
   const [offSet, setOffSet] = React.useState<number>(10);
+
+
+  React.useEffect(()=> {
+    const fetchSearchedRecipes = async () => {
+      try {
+        const recipesData = await getRecipesBySearch(query, 0)
+        setRecipes(recipesData.results)
+        setTotalRecipes(recipesData.totalResults)
+      } catch (error) {
+        console.error("Errore nel caricamento dei dati", error)
+      }
+    }
+
+    fetchSearchedRecipes()
+
+
+  }, [query, setQuery])
+
 
   React.useEffect(() => {
     const fetchRecipes = async () => {

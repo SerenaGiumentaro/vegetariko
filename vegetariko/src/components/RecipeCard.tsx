@@ -1,19 +1,32 @@
-import React from 'react'
-import Panel from 'rsuite/esm/Panel'
+import React from "react";
+import { Link } from "react-router-dom";
+import Panel from "rsuite/esm/Panel";
 
 type RecipeCardProps = {
-    title: string;
-    imgUrl: string;
-}
-const RecipeCard:React.FC<RecipeCardProps> = ({title, imgUrl}) => {
+  title: string;
+  imgUrl: string;
+  idRecipe: number
+};
+const RecipeCard: React.FC<RecipeCardProps> = ({ title, imgUrl , idRecipe}) => {
   return (
-    <Panel shaded bordered bodyFill style={{ display: 'inline-block', width: 240, height: 280}}>
-    <img src={imgUrl} height="240" />
-    <Panel header={title} >
-      
+    <Link to={`/recipe/${idRecipe}`}>
+    
+    <Panel
+      shaded
+      bordered
+      bodyFill
+      style={{
+        display: "inline-block",
+        width: 240,
+        height: 280,
+        cursor: "pointer",
+      }}
+    >
+      <img src={imgUrl} height="240" />
+      <Panel header={title}></Panel>
     </Panel>
-  </Panel>
-  )
-}
+    </Link>
+  );
+};
 
-export default RecipeCard
+export default RecipeCard;

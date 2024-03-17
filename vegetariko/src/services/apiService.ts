@@ -10,14 +10,12 @@ export const getRecipesBySearch = async (query: string, offset: number) => {
         headers: { "x-api-key": `${import.meta.env.VITE_API_KEY}` },
       }
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Errore nel caricamnto dei dati", error);
     throw new Error();
   }
 };
-
 
 export const getRecipes = async (offset: number) => {
   try {
@@ -29,8 +27,22 @@ export const getRecipes = async (offset: number) => {
         headers: { "x-api-key": `${import.meta.env.VITE_API_KEY}` },
       }
     );
-    console.log(response.data);
     return response.data;
+  } catch (error) {
+    console.error("Errore nel caricamnto dei dati", error);
+    throw new Error();
+  }
+};
+
+export const getRecipeByID = async (id: number) => {
+  try {
+    const recipe = await axios.get(
+      `${import.meta.env.VITE_BASE_URL}${id}/information`,
+      {
+        headers: { "x-api-key": `${import.meta.env.VITE_API_KEY}` },
+      }
+    );
+    return recipe.data;
   } catch (error) {
     console.error("Errore nel caricamnto dei dati", error);
     throw new Error();

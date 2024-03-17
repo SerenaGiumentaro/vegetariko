@@ -49,7 +49,7 @@ const RecipesList = () => {
         {recipes?.map((recipe) => {
           return (
             <div key={recipe.id}>
-              <RecipeCard title={recipe.title} imgUrl={recipe.image} />
+              <RecipeCard title={recipe.title} imgUrl={recipe.image} idRecipe={recipe.id}/>
             </div>
           );
         })}

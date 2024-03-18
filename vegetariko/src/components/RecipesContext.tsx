@@ -16,6 +16,8 @@ interface RecipesContextType {
   setQuery: (newQuery: string) => void;
   offSet: number;
   setOffSet: (newOffset: number) => void;
+  isLoading: boolean;
+  setIsLoading: (newIsLoading: boolean) => void
 }
 
 const defaultValue: RecipesContextType = {
@@ -29,6 +31,8 @@ const defaultValue: RecipesContextType = {
   setQuery: () => {},
   offSet: 10,
   setOffSet: () => {},
+  isLoading: true,
+  setIsLoading: () => {},
 };
 const RecipeContext = React.createContext<RecipesContextType>(defaultValue);
 
@@ -40,14 +44,19 @@ export const RecipeProvider: React.FC<ProviderRecipesProps> = ({
   const [activePage, setActivePage] = React.useState<number>(1);
   const [query, setQuery] = React.useState<string>("");
   const [offSet, setOffSet] = React.useState<number>(10);
+  const [isLoading, setIsLoading] = React.useState(true)
 
 
   React.useEffect(()=> {
     const fetchSearchedRecipes = async () => {
       try {
         const recipesData = await getRecipesBySearch(query, 0)
-        setRecipes(recipesData.results)
-        setTotalRecipes(recipesData.totalResults)
+        if(recipesData){
+
+          setRecipes(recipesData.results)
+          setTotalRecipes(recipesData.totalResults)
+          setIsLoading(false)
+        }
       } catch (error) {
         console.error("Errore nel caricamento dei dati", error)
       }
@@ -86,6 +95,8 @@ export const RecipeProvider: React.FC<ProviderRecipesProps> = ({
         setQuery,
         offSet,
         setOffSet,
+        isLoading,
+        setIsLoading
       }}
     >
       {children}

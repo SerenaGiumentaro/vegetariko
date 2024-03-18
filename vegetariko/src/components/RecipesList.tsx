@@ -3,6 +3,7 @@ import { useRecipeContext } from "./RecipesContext";
 import RecipeCard from "./RecipeCard";
 import Pagination from "rsuite/esm/Pagination";
 import { getRecipes, getRecipesBySearch } from "../services/apiService";
+import { Loader } from "rsuite";
 
 type LayoutType = "-" | "|" | "pager" | "skip";
 
@@ -16,6 +17,8 @@ const RecipesList = () => {
     query,
     offSet,
     setOffSet,
+    isLoading,
+    setIsLoading
   } = useRecipeContext();
 
   const layout: LayoutType[] = ["-", "|", "pager", "skip"];
@@ -24,9 +27,12 @@ const RecipesList = () => {
     if (query) {
       try {
         const recipesData = await getRecipesBySearch(query, offSet);
-        setRecipes(recipesData.results);
-        setActivePage(page);
-        setOffSet(page * 10);
+        if(recipesData){
+          setRecipes(recipesData.results);
+          setActivePage(page);
+          setOffSet(page * 10);
+          setIsLoading(false)
+        }
       } catch (error) {
         console.error("Errore nel caricamento dei dati", error);
       }
@@ -43,6 +49,8 @@ const RecipesList = () => {
   };
 
   return (
+    isLoading ? 
+    (<Loader backdrop content="loading..." vertical />) : 
     <div>
       <div className="flex gap-8 flex-wrap justify-center p-12">
         {recipes.length === 0 && <p>No results found for your search.</p>}
